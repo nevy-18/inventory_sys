@@ -1,0 +1,195 @@
+$primary-dark: #2c3e50;
+$accent-blue: #3498db;
+$bg-light: #f4f7f6;
+$white: #ffffff;
+$sidebar-width: 260px;
+$header-height: 70px;
+
+body {
+    background-color: $bg-light;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #333;
+}
+
+header {
+    height: $header-height;
+    background-color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        position: relative;
+    }
+
+    .menu-toggle {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: $primary-dark;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    h1 {
+        font-size: 20px;
+        color: $primary-dark;
+        margin: 0;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+
+    .search-bar {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        background: $bg-light;
+        padding: 5px 15px;
+        border-radius: 20px;
+        z-index: 2;
+        
+        input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 5px;
+            width: 150px;
+            transition: width 0.3s ease;
+
+            &:focus { width: 220px; }
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+        }
+    }
+}
+
+#sidebar {
+    height: 100%;
+    width: $sidebar-width;
+    position: fixed;
+    top: 0;
+    left: 0; 
+    background-color: $primary-dark;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1100;
+    padding-top: 40px;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+
+    &.open {
+        transform: translateX(0);
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        color: rgba(255,255,255,0.6);
+        cursor: pointer;
+        &:hover { color: $white; }
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 30px;
+
+        li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            transition: all 0.3s;
+
+            i { margin-right: 15px; width: 20px; }
+            &:hover {
+                background: rgba(255,255,255,0.1);
+                color: $white;
+                padding-left: 35px;
+            }
+        }
+    }
+}
+
+main {
+    margin-top: calc(#{$header-height} + 30px);
+    padding: 0 40px 100px 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+
+    section h2 {
+        font-weight: 600;
+        color: $primary-dark;
+        margin-bottom: 25px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: $white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background-color: #f8fafc;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: #718096;
+        }
+
+        tr:last-child td { border-bottom: none; }
+    }
+}
+
+footer {
+    background-color: $white;
+    color: #a0aec0;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 13px;
+    border-top: 1px solid #edf2f7;
+    z-index: 900;
+}
+
+@media (max-width: 768px) {
+    #sidebar { width: 100%; }
+    #sidebar.open { transform: translateX(0); }
+    main { padding: 0 20px 100px 20px; }
+    header h1 { display: none; }
+}

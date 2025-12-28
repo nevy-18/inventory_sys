@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+    {{ fontawesome_html() }}
+    <title>INVENTORY SYSTEM</title>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">
+                <i class="fa fa-bars"></i>
+            </button>
+            <h1>INVENTORY SYSTEM</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search item..." aria-label="Search item">
+                <button type="submit" aria-label="Submit search"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <aside id="sidebar" role="navigation" aria-label="Main navigation">
+        <button class="close-btn" onclick="toggleMenu()" aria-label="Close navigation menu">
+            <i class="fa fa-times"></i>
+        </button>
+        <nav>
+            <ul>
+                <li><a href="#dashboard"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+                <li><a href="#products"><i class="fa fa-box"></i> Products</a></li>
+                <li><a href="#orders"><i class="fa fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="#suppliers"><i class="fa fa-truck"></i> Suppliers</a></li>
+                <li><a href="#reports"><i class="fa fa-chart-bar"></i> Reports</a></li>
+                <li><a href="#settings"><i class="fa fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+            <p>Welcome to your inventory management system. Overview of key metrics here.</p>
+        </section>
+
+        <section id="products">
+            <h2>Product Inventory</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Stock Quantity</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>${{ "%.2f"|format(product.price) }}</td>
+                        <td>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Inventory System. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
