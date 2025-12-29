@@ -10,21 +10,19 @@
 <body>
     <header>
         <div class="header-container">
-            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation menu">
+            <button class="menu-toggle" onclick="toggleMenu()">
                 <i class="fa fa-bars"></i>
             </button>
             <h1>INVENTORY SYSTEM</h1>
             <div class="search-bar">
-                <input type="text" placeholder="Search item..." aria-label="Search item">
-                <button type="submit" aria-label="Submit search"><i class="fa fa-search"></i></button>
+                <input type="text" placeholder="Search item...">
+                <button type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </header>
 
-    <aside id="sidebar" role="navigation" aria-label="Main navigation">
-        <button class="close-btn" onclick="toggleMenu()" aria-label="Close navigation menu">
-            <i class="fa fa-times"></i>
-        </button>
+    <aside id="sidebar">
+        <button class="close-btn" onclick="toggleMenu()">&times;</button>
         <nav>
             <ul>
                 <li><a href="#dashboard"><i class="fa fa-tachometer"></i> Dashboard</a></li>
@@ -37,43 +35,8 @@
         </nav>
     </aside>
 
-    <main>
-        <section id="dashboard">
-            <h2>Dashboard</h2>
-            <p>Welcome to your inventory management system. Overview of key metrics here.</p>
-        </section>
-
-        <section id="products">
-            <h2>Product Inventory</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Stock Quantity</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr>
-                        <td>{{ product.id }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.stock }}</td>
-                        <td>${{ "%.2f"|format(product.price) }}</td>
-                        <td>
-                            <button>Edit</button>
-                            <button>Delete</button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </section>
-    </main>
+    <main id="content-area">
+        </main>
 
     <footer>
         <p>&copy; 2025 Inventory System. All rights reserved.</p>

@@ -1,0 +1,61 @@
+<section id="orders">
+    <h2>Recent Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.customer }}</td>
+                <td>{{ order.date }}</td>
+                <td>${{ "%.2f"|format(order.total) }}</td>
+                <td>
+                    <span class="status-badge {{ order.status|lower }}">
+                        {{ order.status }}
+                    </span>
+                </td>
+                <td>
+                    <button class="view-btn">View Details</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<style>
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    .status-badge.completed {
+        background-color: #d1fae5;
+        color: #065f46;
+    }
+    .status-badge.pending {
+        background-color: #fef3c7;
+        color: #92400e;
+    }
+    .view-btn {
+        background: none;
+        border: 1px solid #cbd5e0;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .view-btn:hover {
+        background: #edf2f7;
+    }
+</style>

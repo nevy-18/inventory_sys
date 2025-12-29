@@ -1,0 +1,20 @@
+<section id="dashboard">
+    <h2>Dashboard Overview</h2>
+    
+    <div class="dashboard-grid" style="display: flex; gap: 20px; margin-top: 25px;">
+        <div class="card" style="background: white; padding: 20px; border-radius: 12px; flex: 1; border-left: 5px solid #3498db;">
+            <h3 style="margin: 0; font-size: 14px; color: #718096;">TOTAL PRODUCTS</h3>
+            <p style="font-size: 28px; font-weight: bold; margin: 10px 0 0 0;">{{ total }}</p>
+        </div>
+
+        <div class="card" style="background: white; padding: 20px; border-radius: 12px; flex: 1; border-left: 5px solid #e74c3c;">
+            <h3 style="margin: 0; font-size: 14px; color: #718096;">LOW STOCK ALERTS</h3>
+            <p style="font-size: 28px; font-weight: bold; margin: 10px 0 0 0; color: #e74c3c;">{{ low_stock }}</p>
+        </div>
+
+        <div class="card" style="background: white; padding: 20px; border-radius: 12px; flex: 1; border-left: 5px solid #2ecc71;">
+            <h3 style="margin: 0; font-size: 14px; color: #718096;">INVENTORY VALUE</h3>
+            <p style="font-size: 28px; font-weight: bold; margin: 10px 0 0 0;">₱{{ "%.2f"|format(value) }}</p>
+        </div>
+    </div>
+</section>
