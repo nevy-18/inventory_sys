@@ -1,59 +1,125 @@
-<div class="section-header">
-    <h2>Inventory Smart Report</h2>
+<style>
+    .report-container { padding: 20px; }
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+    }
+    .algorithm-badge {
+        background: #34495e;
+        color: white;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: bold;
+    }
+    .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        margin-bottom: 50px;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .report-table th {
+        background: #f8f9fa;
+        padding: 15px;
+        border-bottom: 2px solid #dee2e6;
+        color: #2c3e50;
+    }
+    .report-table td { padding: 12px; border-bottom: 1px solid #eee; }
+    .low-alert-row { background-color: #fff5f5; color: #e74c3c; font-weight: bold; }
+    
+    /* Updated badge styles */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        border: none;
+        display: inline-block;
+    }
+    .status-ok { background: #d4edda; color: #155724; }
+    
+    /* Clickable Restock Style */
+    .status-low { 
+        background: #e74c3c; 
+        color: white; 
+        cursor: pointer; 
+        transition: background 0.2s;
+        font-weight: bold;
+    }
+    .status-low:hover { background: #c0392b; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+    h3 { color: #2c3e50; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+</style>
+
+<div class="report-container">
+    <div class="report-header">
+        <h2>System Reports</h2>
+        <div class="algorithm-badge">
+            <i class="fas fa-microchip"></i> Hybrid Sort: Category & Stock
+        </div>
+    </div>
+
+    <h3><i class="fas fa-heartbeat"></i> Inventory Health</h3>
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Item Details</th>
+                <th>Current Stock</th>
+                
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr class="{{ 'low-alert-row' if product.stock <= threshold else '' }}">
+                <td style="background: #fcfcfc;">{{ product.category }}</td>
+                <td>{{ product.name }} {% if product.size != 'N/A' %}({{ product.size }}){% endif %}</td>
+                <td>{{ product.stock }}</td>
+                
+                <td>
+                    {% if product.stock <= threshold %}
+                        <button class="status-badge status-low" onclick="restockItem('{{ product.name }}', '{{ product.size }}')">
+                            <i class="fas fa-plus-circle"></i> Restock
+                        </button>
+                    {% else %}
+                        <span class="status-badge status-ok">Stable</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3><i class="fas fa-history"></i> Recent Sales Performance</h3>
+    <table class="report-table">
+        <thead>
+            <tr>
+                <th>Date / Time</th>
+                <th>Product Sold</th>
+                <th>Qty</th>
+                <th>Assigned Seller</th>
+                <th>Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.date_sold.strftime('%b %d, %H:%M') }}</td>
+                <td>{{ sale.product_name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>{{ sale.assigned_to }}</td>
+                <td style="font-weight: bold;">₱{{ "%.2f"|format(sale.total_price) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No sales recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-
-<h3>Restock Priority (Hybrid Sorted)</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>Item</th>
-            <th>Stock</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in products %}
-        <tr>
-            <td>{{ product.category }}</td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.stock }}</td>
-            <td>
-                {% if product.stock < 5 %}
-                <span style="color: red; font-weight: bold;">RESTOCK</span>
-                {% else %}
-                <span style="color: green;">OK</span>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<hr style="margin: 40px 0;">
-
-<h3>Sales History</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Item Name</th>
-            <th>Qty</th>
-            <th>Total Amount</th>
-            <th>Assigned To</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for sale in sales %}
-        <tr>
-            <td>{{ sale.date_sold.strftime('%Y-%m-%d %H:%M') }}</td>
-            <td>{{ sale.product_name }}</td>
-            <td>{{ sale.quantity }}</td>
-            <td>₱{{ "%.2f"|format(sale.total_price) }}</td>
-            <td><strong>{{ sale.assigned_to }}</strong></td>
-        </tr>
-        {% else %}
-        <tr><td colspan="5" style="text-align:center;">No sales recorded yet.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>

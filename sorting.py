@@ -37,3 +37,7 @@ def merge_sort(arr, key):
             j += 1
             k += 1
     return arr
+
+def adrenaline_hybrid_sort(arr, primary_key, secondary_key):
+    rough_sorted = shell_sort(arr, primary_key)
+    return merge_sort(rough_sorted, secondary_key)

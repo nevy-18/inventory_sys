@@ -1,0 +1,73 @@
+<style>
+    /* Main container for the settings card */
+    .settings-wrapper { 
+        max-width: 400px; 
+        margin: 50px auto; 
+        padding: 30px; 
+        background: white; 
+        border-radius: 12px; 
+        text-align: center; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    }
+
+    /* Styling the centered text boxes */
+    .settings-wrapper input { 
+        width: 100%; 
+        padding: 12px; 
+        margin: 15px 0; 
+        border: 1px solid #ddd; 
+        border-radius: 8px; 
+        text-align: center; 
+        box-sizing: border-box;
+        font-size: 1.1em;
+    }
+
+    .btn-update { 
+        width: 100%; 
+        background: #3498db; 
+        color: white; 
+        border: none; 
+        padding: 12px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-weight: bold; 
+    }
+
+    /* Danger zone for database maintenance */
+    .maintenance-zone { 
+        margin-top: 40px; 
+        padding-top: 20px; 
+        border-top: 1px solid #eee; 
+    }
+
+    .btn-reset { 
+        width: 100%; 
+        background: #e74c3c; 
+        color: white; 
+        border: none; 
+        padding: 12px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+    }
+</style>
+
+<div class="settings-wrapper">
+    <h2>System Preferences</h2>
+    
+    <form id="settingsForm">
+        <label><b>Low Stock Alert Limit</b></label>
+        <p style="font-size: 0.85em; color: #7f8c8d; margin-top: 5px;">
+            Set the quantity that triggers "Low Stock" alerts across the system.
+        </p>
+        <input type="number" name="threshold" value="{{ threshold }}" min="1" required>
+        <button type="submit" class="btn-update">Save & Refresh Dashboard</button>
+    </form>
+
+    <div class="maintenance-zone">
+        <h4 style="color: #e74c3c; margin-bottom: 10px;">Database Maintenance</h4>
+        <p style="font-size: 0.8em; color: #95a5a6; margin-bottom: 15px;">
+            Clearing the database will delete all products, sales, and suppliers.
+        </p>
+        <button onclick="confirmReset()" class="btn-reset">Reset All Data</button>
+    </div>
+</div>
