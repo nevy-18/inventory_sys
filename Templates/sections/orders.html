@@ -1,61 +1,56 @@
-<section id="orders">
-    <h2>Recent Orders</h2>
-    <table>
+<style>
+    .btn-initiate { background: #9b59b6; color: white; padding: 15px 30px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
+    .order-card { display: none; max-width: 450px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin: 0 auto 30px; text-align: center; }
+    .order-card input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; }
+    .btn-post-action { width: 100%; padding: 12px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .orders-table { width: 100%; border-collapse: collapse; margin-top: 30px; background: white; text-align: center; }
+    .orders-table th, .orders-table td { padding: 12px; border: 1px solid #eee; }
+    .btn-complete { background: #2ecc71; color: white; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+</style>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <button id="showOrderFormBtn" class="btn-initiate" onclick="toggleOrderInterface()">+ Add New Order</button>
+
+    <div id="orderRequestCard" class="order-card">
+        <h3>New Order Request</h3>
+        <form id="orderPostForm">
+            <input type="text" name="name" placeholder="Item Name" oninput="checkOrderAvailability()" required>
+            <input type="text" name="size" placeholder="Size (N/A)" oninput="checkOrderAvailability()" required>
+            <input type="number" name="quantity" placeholder="Quantity" oninput="checkOrderAvailability()" required>
+            <input type="text" name="customer_name" placeholder="Customer Name" required>
+            <input type="text" name="assigned_seller" placeholder="Assigned Seller Name" required>
+            <div id="stockStatusDisplay" style="margin: 10px 0; font-weight: bold;">Waiting for input...</div>
+            <button type="submit" id="postOrderBtn" class="btn-post-action" style="display:none;">Post Order</button>
+            <button type="button" onclick="toggleOrderInterface()" style="background:none; border:none; color:gray; margin-top:10px; cursor:pointer;">Cancel</button>
+        </form>
+    </div>
+
+    <h3>Pending Orders Queue</h3>
+    <table class="orders-table">
         <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Date</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
+            <tr><th>Seller</th><th>Customer</th><th>Product</th><th>Qty</th><th>Action</th></tr>
         </thead>
         <tbody>
             {% for order in orders %}
             <tr>
-                <td>#{{ order.id }}</td>
-                <td>{{ order.customer }}</td>
-                <td>{{ order.date }}</td>
-                <td>${{ "%.2f"|format(order.total) }}</td>
+                <td style="color: #8e44ad; font-weight: bold;">{{ order.assigned_seller }}</td>
+                <td>{{ order.customer_name }}</td>
+                <td>{{ order.product_name }} ({{ order.size }})</td>
+                <td>{{ order.quantity }}</td>
                 <td>
-                    <span class="status-badge {{ order.status|lower }}">
-                        {{ order.status }}
-                    </span>
-                </td>
-                <td>
-                    <button class="view-btn">View Details</button>
+                    {% set ns = namespace(found=false) %}
+                    {% for p in products if p.name == order.product_name and p.size == order.size %}
+                        {% if p.stock >= order.quantity %}
+                            <button class="btn-complete" onclick="finishOrder({{ order.id }})">Complete Order</button>
+                            {% set ns.found = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not ns.found %}
+                        <span style="color:#e74c3c; font-weight:bold;">Waiting for supplies</span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-</section>
-
-<style>
-    .status-badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    .status-badge.completed {
-        background-color: #d1fae5;
-        color: #065f46;
-    }
-    .status-badge.pending {
-        background-color: #fef3c7;
-        color: #92400e;
-    }
-    .view-btn {
-        background: none;
-        border: 1px solid #cbd5e0;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-    .view-btn:hover {
-        background: #edf2f7;
-    }
-</style>
+</div>
